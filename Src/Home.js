@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Linking, Vibration, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Vibration, Platform, Alert } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Back } from '../Src/BackHandler'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Clipboard from 'expo-clipboard';
-//import Snackbar from 'react-native-snackbar';
 export function Home() {
     const navigations = useNavigation();
     const [Quote, setQuote] = useState('Loading....');
     const [Author, setAuthor] = useState('Loading...');
     const [isLoading, setIsLoading] = useState(false);
+    const [copiedText, setCopiedText] = useState('');
     const randomQuote = () => {
         setIsLoading(true);
         fetch("https://api.quotable.io/random").then(res => res.json()).then(result => {
@@ -24,9 +24,9 @@ export function Home() {
         randomQuote();
     }, [])
 
-    const Copytoclip = () => {
-        Vibration.vibrate(15);
-
+    const Copytoclip = async () => {
+        await Clipboard.setStringAsync(Quote);
+        Alert.alert('Copy', "Quotes Copied");
     }
     const whatshare = () => {
         const url = "whatsapp://send?text=" + Quote;
@@ -50,21 +50,18 @@ export function Home() {
                 <TouchableOpacity onPress={() => { randomQuote() }} style={styles.touch}>
                     <Text style={styles.text3}>
                         {isLoading ? "Loading..." : "New Quote"}
-
                     </Text>
                 </TouchableOpacity>
-
                 <View style={styles.container2}>
 
                     <TouchableOpacity onPress={() => { }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
                         <FontAwesome name="thumbs-up" size={22} color='#5372F0' />
                     </TouchableOpacity>
-
                     <TouchableOpacity onPress={() => { Copytoclip(); Vibrates(); }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
                         <FontAwesome name="copy" size={22} color='#5372F0' />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { whatshare() }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
+                    <TouchableOpacity onPress={() => { whatshare(); Vibrates(); }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
                         <FontAwesome name="whatsapp" size={22} color='#5372F0' />
                     </TouchableOpacity>
                     <Back />
