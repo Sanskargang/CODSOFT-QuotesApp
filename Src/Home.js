@@ -10,14 +10,15 @@ export function Home() {
     const [Quote, setQuote] = useState('Loading....');
     const [Author, setAuthor] = useState('Loading...');
     const [isLoading, setIsLoading] = useState(false);
-    const [copiedText, setCopiedText] = useState('');
+    const [Favourite,setFavourite] = useState([]);
+    //const [copiedText, setCopiedText] = useState('');
     const randomQuote = () => {
         setIsLoading(true);
         fetch("https://api.quotable.io/random").then(res => res.json()).then(result => {
             setQuote(result.content);
             setAuthor(result.author);
             setIsLoading(false);
-            //console.log(result.author);
+            setFavourite(result.content);
         })
     }
     useEffect(() => {
@@ -31,8 +32,11 @@ export function Home() {
     const whatshare = () => {
         const url = "whatsapp://send?text=" + Quote;
         Linking.openURL(url);
-
     }
+    const addToFavorites = () => {
+        setFavourite([Favourite])
+        console.log(Favourite);
+      }
     return (
         <View style={styles.container}>
             <View style={styles.container1}>
@@ -54,7 +58,7 @@ export function Home() {
                 </TouchableOpacity>
                 <View style={styles.container2}>
 
-                    <TouchableOpacity onPress={() => { }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
+                    <TouchableOpacity onPress={() => { Vibrates();addToFavorites();Add();}} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
                         <FontAwesome name="thumbs-up" size={22} color='#5372F0' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { Copytoclip(); Vibrates(); }} style={{ borderWidth: 2, borderColor: '#5372F0', borderRadius: 50, padding: 15 }}>
@@ -76,7 +80,11 @@ export function Home() {
 }
 
 export function Vibrates() {
-    Vibration.vibrate(15);
+    Vibration.vibrate(17);
+}
+
+export function Add(){
+    console.warn("Quotes Added To Favourite Section");
 }
 
 const styles = StyleSheet.create({

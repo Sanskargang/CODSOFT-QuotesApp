@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button ,TouchableOpacity} from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Home } from "./Home";
 export  function Favourite({navigation: { goBack }}) {
   return(
     <View style={styles.container}>
